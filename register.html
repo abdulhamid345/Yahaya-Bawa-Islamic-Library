@@ -1,0 +1,166 @@
+<html><head><base href="/" /><title>Register - Yahaya Bawa Islamic Library</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+      .form-input {
+        transition: all 0.3s ease;
+      }
+      .form-input:focus {
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-out;
+      }
+      .hero-pattern {
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+    </style>
+    </head>
+    <body class="bg-gray-50">
+    <div id="app">
+      <!-- Navigation -->
+      <nav class="bg-green-800 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+          <div class="flex justify-between h-16">
+            <div class="flex items-center">
+              <a href="/" class="text-xl font-bold flex items-center">
+                <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Yahaya Bawa Islamic Library
+              </a>
+            </div>
+            <div class="flex items-center space-x-6">
+              <a href="/books" class="hover:text-green-200 transition-colors">Books</a>
+              <a href="/scholars" class="hover:text-green-200 transition-colors">Scholars</a>
+              <a href="/login" class="hover:text-green-200 transition-colors">Login</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    
+      <!-- Registration Form -->
+      <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+          <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 fade-in">Create your account</h2>
+          <p class="mt-2 text-center text-sm text-gray-600 fade-in">
+            Join our community to access the rich Islamic heritage
+          </p>
+        </div>
+    
+        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <form class="space-y-6" @submit.prevent="handleRegister">
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                <div class="mt-1">
+                  <input id="name" v-model="form.name" type="text" required
+                         class="form-input appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                </div>
+              </div>
+    
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                <div class="mt-1">
+                  <input id="email" v-model="form.email" type="email" required
+                         class="form-input appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                </div>
+              </div>
+    
+              <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <div class="mt-1">
+                  <input id="password" v-model="form.password" type="password" required
+                         class="form-input appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                </div>
+              </div>
+    
+              <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                <div class="mt-1">
+                  <input id="confirmPassword" v-model="form.confirmPassword" type="password" required
+                         class="form-input appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                </div>
+              </div>
+    
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <input id="terms" v-model="form.acceptTerms" type="checkbox" required
+                         class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                  <label for="terms" class="ml-2 block text-sm text-gray-900">
+                    I agree to the <a href="https://example.com/terms" class="text-green-600 hover:text-green-500">Terms and Conditions</a>
+                  </label>
+                </div>
+              </div>
+    
+              <div>
+                <button type="submit" 
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+                  Register
+                </button>
+              </div>
+            </form>
+    
+            <div class="mt-6">
+              <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                  <span class="px-2 bg-white text-gray-500">Already have an account?</span>
+                </div>
+              </div>
+    
+              <div class="mt-6">
+                <a href="/login"
+                   class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-green-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors border-green-600">
+                  Sign in
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+    const { createApp } = Vue
+    
+    createApp({
+      data() {
+        return {
+          form: {
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            acceptTerms: false
+          }
+        }
+      },
+      methods: {
+        handleRegister() {
+          if (this.form.password !== this.form.confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+          }
+          
+          // Here you would typically make an API call to register the user
+          console.log('Form submitted:', this.form);
+          alert('Registration successful!');
+          // Redirect to login page or dashboard
+          window.location.href = '/login';
+        }
+      }
+    }).mount('#app')
+    </script>
+    
+    </body></html>
