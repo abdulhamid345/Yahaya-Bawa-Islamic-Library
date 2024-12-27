@@ -21,6 +21,52 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
       }
+      /* Mobile menu styles */
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #166534; /* green-800 */
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 0.5rem;
+      }
+
+      @media (min-width: 768px) {
+        .nav-links {
+          display: flex;
+          position: static;
+          padding: 0;
+          flex-direction: row;
+          align-items: center;
+          gap: 1.5rem;
+          background-color: transparent;
+        }
+        
+        .nav-links a {
+          padding: 0;
+        }
+      }
+      /* Responsive timeline */
+      @media (max-width: 768px) {
+        .timeline-content {
+          width: 100%;
+          margin: 0;
+          padding: 1rem;
+        }
+      }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
     </head>
@@ -29,7 +75,7 @@
       <!-- Navigation -->
       <nav class="bg-green-800 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
-          <div class="flex justify-between h-16">
+          <div class="flex justify-between items-center h-16 relative">
             <div class="flex items-center">
               <a href="/" class="text-xl font-bold flex items-center">
                 <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,10 +83,30 @@
                   <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                Yahaya Bawa Islamic Library
+                <span class="hidden sm:inline">Yahaya Bawa Islamic Library</span>
+                <span class="sm:hidden">YBIL</span>
               </a>
             </div>
-            <div class="flex items-center space-x-6">
+            
+            <div class="flex items-center gap-4">
+              <button @click="toggleDarkMode" class="p-2 rounded-full hover:bg-green-700">
+                <svg v-if="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                </svg>
+                <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
+                </svg>
+              </button>
+              
+              <button @click="menuOpen = !menuOpen" class="md:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path v-if="!menuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                  <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+
+            <div :class="['nav-links', { 'active': menuOpen }]">
               <a href="books.html" class="hover:text-green-200 transition-colors">Books</a>
               <a href="scholars-page.html" class="hover:text-green-200 transition-colors">Scholars</a>
               <a href="login.html" class="hover:text-green-200 transition-colors">Login</a>
@@ -49,18 +115,18 @@
           </div>
         </div>
       </nav>
-    
+
       <!-- Scholar Profile Header -->
-      <div class="bg-green-700 text-white py-16">
+      <div class="bg-green-700 text-white py-8 md:py-16">
         <div class="max-w-7xl mx-auto px-4">
           <div class="flex flex-col md:flex-row items-center gap-8">
-            <div class="h-48 w-48 rounded-full bg-green-200 flex items-center justify-center">
-              <span class="text-6xl text-green-800 arabic-calligraphy">{{ scholar.initial }}</span>
+            <div class="h-32 w-32 md:h-48 md:w-48 rounded-full bg-green-200 flex items-center justify-center">
+              <span class="text-4xl md:text-6xl text-green-800 arabic-calligraphy">{{ scholar.initial }}</span>
             </div>
             <div class="text-center md:text-left">
-              <h1 class="text-4xl font-bold mb-4">{{ scholar.name }}</h1>
-              <p class="text-xl mb-4">{{ scholar.era }}</p>
-              <div class="flex flex-wrap gap-2">
+              <h1 class="text-2xl md:text-4xl font-bold mb-4">{{ scholar.name }}</h1>
+              <p class="text-lg md:text-xl mb-4">{{ scholar.era }}</p>
+              <div class="flex flex-wrap justify-center md:justify-start gap-2">
                 <span v-for="specialty in scholar.specialties" 
                       :key="specialty"
                       class="px-4 py-1 bg-green-600 rounded-full text-sm">
@@ -71,41 +137,42 @@
           </div>
         </div>
       </div>
-    
+
+      <!-- Rest of the content remains the same but with responsive classes -->
       <!-- Scholar Biography -->
-      <div class="max-w-7xl mx-auto px-4 py-12">
-        <div class="bg-white rounded-lg shadow-lg p-8">
-          <h2 class="text-2xl font-bold mb-6">Biography</h2>
+      <div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
+        <div class="bg-white rounded-lg shadow-lg p-4 md:p-8">
+          <h2 class="text-xl md:text-2xl font-bold mb-6">Biography</h2>
           <p class="text-gray-700 leading-relaxed mb-6">{{ scholar.biography }}</p>
-          <div class="grid md:grid-cols-3 gap-6 mt-8">
-            <div class="bg-green-50 p-6 rounded-lg">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-8">
+            <div class="bg-green-50 p-4 md:p-6 rounded-lg">
               <h3 class="font-bold mb-2">Published Works</h3>
-              <p class="text-3xl font-bold text-green-700">{{ scholar.works }}</p>
+              <p class="text-2xl md:text-3xl font-bold text-green-700">{{ scholar.works }}</p>
             </div>
-            <div class="bg-green-50 p-6 rounded-lg">
+            <div class="bg-green-50 p-4 md:p-6 rounded-lg">
               <h3 class="font-bold mb-2">Students</h3>
-              <p class="text-3xl font-bold text-green-700">{{ scholar.students }}</p>
+              <p class="text-2xl md:text-3xl font-bold text-green-700">{{ scholar.students }}</p>
             </div>
-            <div class="bg-green-50 p-6 rounded-lg">
+            <div class="bg-green-50 p-4 md:p-6 rounded-lg">
               <h3 class="font-bold mb-2">Years Active</h3>
-              <p class="text-3xl font-bold text-green-700">{{ scholar.activeYears }}</p>
+              <p class="text-2xl md:text-3xl font-bold text-green-700">{{ scholar.activeYears }}</p>
             </div>
           </div>
         </div>
       </div>
-    
+
       <!-- Scholar's Works -->
-      <div class="max-w-7xl mx-auto px-4 py-12">
-        <h2 class="text-2xl font-bold mb-8">Notable Works</h2>
-        <div class="grid md:grid-cols-3 gap-8">
+      <div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
+        <h2 class="text-xl md:text-2xl font-bold mb-8">Notable Works</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           <div v-for="book in scholarWorks" 
                :key="book.id" 
                class="book-card bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="h-48 bg-green-100 flex items-center justify-center">
+            <div class="h-40 md:h-48 bg-green-100 flex items-center justify-center">
               <span class="text-4xl">📚</span>
             </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-2">{{ book.title }}</h3>
+            <div class="p-4 md:p-6">
+              <h3 class="text-lg md:text-xl font-bold mb-2">{{ book.title }}</h3>
               <p class="text-gray-600 mb-4">{{ book.description }}</p>
               <div class="flex justify-between items-center">
                 <span class="text-sm text-gray-500">{{ book.year }}</span>
@@ -121,19 +188,19 @@
           </div>
         </div>
       </div>
-    
+
       <!-- Timeline -->
-      <div class="bg-gray-100 py-16">
+      <div class="bg-gray-100 py-8 md:py-16">
         <div class="max-w-7xl mx-auto px-4">
-          <h2 class="text-2xl font-bold mb-12 text-center">Life Timeline</h2>
+          <h2 class="text-xl md:text-2xl font-bold mb-8 md:mb-12 text-center">Life Timeline</h2>
           <div class="relative">
             <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-green-200"></div>
-            <div class="space-y-12">
+            <div class="space-y-8 md:space-y-12">
               <div v-for="event in scholarTimeline" 
                    :key="event.year" 
                    class="relative">
                 <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-4 w-4 h-4 bg-green-500 rounded-full"></div>
-                <div class="ml-auto mr-8 md:mr-auto md:ml-8 p-6 bg-white rounded-lg shadow-md w-full md:w-96" 
+                <div class="timeline-content ml-auto mr-4 md:mr-8 md:ml-8 p-4 md:p-6 bg-white rounded-lg shadow-md w-full md:w-96" 
                      :class="event.year % 2 === 0 ? 'md:ml-auto md:mr-8' : 'md:mr-auto md:ml-8'">
                   <span class="text-green-600 font-bold">{{ event.year }}</span>
                   <h3 class="font-bold mt-2 mb-2">{{ event.title }}</h3>
@@ -145,13 +212,15 @@
         </div>
       </div>
     </div>
-    
+
     <script>
     const { createApp } = Vue
     
     createApp({
       data() {
         return {
+          menuOpen: false,
+          darkMode: false,
           scholar: {
             id: 2,
             name: 'Sheikh Abdullahi Bn Fodio',
@@ -210,6 +279,11 @@
               description: 'Died in Sokoto, leaving a rich legacy of Islamic scholarship'
             }
           ]
+        }
+      },
+      methods: {
+        toggleDarkMode() {
+          this.darkMode = !this.darkMode
         }
       }
     }).mount('#app')
