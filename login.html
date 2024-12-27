@@ -1,0 +1,167 @@
+<html><head><base href="/" /><title>Login - Islamic Heritage Library</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+      .login-form {
+        transition: all 0.3s ease;
+      }
+      .login-form:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-out;
+      }
+      .input-field {
+        transition: all 0.3s ease;
+      }
+      .input-field:focus {
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+      }
+      .hero-pattern {
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+      .scholar-card {
+        transition: all 0.3s ease;
+      }
+      .scholar-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+      .book-card {
+        transition: all 0.3s ease;
+      }
+      .book-card:hover {
+        transform: scale(1.02);
+      }
+      .search-bar {
+        transition: all 0.3s ease;
+      }
+      .search-bar:focus {
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+      }
+      .arabic-calligraphy {
+        font-family: 'Noto Naskh Arabic', serif;
+      }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
+    </head>
+    <body class="bg-gray-50">
+    <div id="app">
+      <!-- Navigation -->
+      <nav class="bg-green-800 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+          <div class="flex justify-between h-16">
+            <div class="flex items-center">
+              <a href="/" class="text-xl font-bold flex items-center">
+                <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Islamic Heritage Library
+              </a>
+            </div>
+            <div class="flex items-center space-x-6">
+              <a href="/" class="hover:text-green-200 transition-colors">Home</a>
+              <a href="/books" class="hover:text-green-200 transition-colors">Books</a>
+              <a href="/scholars" class="hover:text-green-200 transition-colors">Scholars</a>
+              <a href="/register" class="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Register</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    
+      <!-- Login Section -->
+      <div class="min-h-screen bg-green-700 hero-pattern py-16 px-4">
+        <div class="max-w-md mx-auto">
+          <div class="login-form bg-white rounded-lg shadow-xl p-8 fade-in">
+            <div class="text-center mb-8">
+              <h2 class="text-3xl font-bold text-gray-800">Welcome Back</h2>
+              <p class="text-gray-600 mt-2">Sign in to access your account</p>
+            </div>
+    
+            <form @submit.prevent="handleLogin" class="space-y-6">
+              <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
+                <input 
+                  type="email" 
+                  v-model="email"
+                  class="input-field w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-green-500"
+                  placeholder="Enter your email"
+                  required
+                >
+              </div>
+    
+              <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                <input 
+                  type="password" 
+                  v-model="password"
+                  class="input-field w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-green-500"
+                  placeholder="Enter your password"
+                  required
+                >
+              </div>
+    
+              <div class="flex items-center justify-between">
+                <label class="flex items-center">
+                  <input type="checkbox" v-model="rememberMe" class="form-checkbox text-green-600">
+                  <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                </label>
+                <a href="https://example.com/forgot-password" class="text-sm text-green-600 hover:text-green-800">Forgot password?</a>
+              </div>
+    
+              <button 
+                type="submit"
+                class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+              >
+                Sign In
+              </button>
+            </form>
+    
+            <div class="mt-6 text-center">
+              <p class="text-gray-600">
+                Don't have an account? 
+                <a href="/register" class="text-green-600 hover:text-green-800 font-semibold">Register here</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+    const { createApp } = Vue
+    
+    createApp({
+      data() {
+        return {
+          email: '',
+          password: '',
+          rememberMe: false
+        }
+      },
+      methods: {
+        handleLogin() {
+          // Here you would typically make an API call to authenticate the user
+          console.log('Login attempt:', {
+            email: this.email,
+            password: this.password,
+            rememberMe: this.rememberMe
+          })
+          
+          // For demonstration purposes, show an alert
+          alert('Login functionality would be implemented here')
+        }
+      }
+    }).mount('#app')
+    </script>
+    
+    </body></html>
