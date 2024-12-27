@@ -1,0 +1,212 @@
+<html><head><base href="/" /><title>Scholar Works - Read Work</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+      .arabic-text {
+        font-family: 'Noto Naskh Arabic', serif;
+        line-height: 2;
+      }
+      .chapter-card {
+        transition: all 0.3s ease;
+      }
+      .chapter-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
+    </head>
+    <body class="bg-gray-50">
+    <div id="app" v-cloak>
+      <!-- Navigation -->
+      <nav class="bg-green-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+          <div class="flex justify-between h-16">
+            <div class="flex items-center">
+              <a href="https://example.com" class="text-xl font-bold flex items-center">
+                <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Islamic Heritage Library
+              </a>
+            </div>
+            <div class="flex items-center space-x-6">
+              <a href="https://example.com/books" class="hover:text-green-200 transition-colors">Books</a>
+              <a href="https://example.com/scholars" class="hover:text-green-200 transition-colors">Scholars</a>
+              <a href="https://example.com/login" class="hover:text-green-200 transition-colors">Login</a>
+              <a href="https://example.com/register" class="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Register</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    
+      <template v-if="work">
+        <!-- Work Header -->
+        <div class="bg-green-700 text-white py-12">
+          <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-start justify-between">
+              <div>
+                <div class="flex items-center space-x-4 mb-4">
+                  <a href="https://example.com/scholar/1" class="text-green-200 hover:text-white transition-colors">{{ work.author }}</a>
+                  <span class="text-green-200">›</span>
+                  <span>{{ work.title }}</span>
+                </div>
+                <h1 class="text-4xl font-bold mb-4">{{ work.title }}</h1>
+                <p class="text-xl mb-6">{{ work.description }}</p>
+                <div class="flex space-x-4">
+                  <span class="bg-green-600 px-4 py-2 rounded-lg">{{ work.category }}</span>
+                  <span class="bg-green-600 px-4 py-2 rounded-lg">{{ work.downloads }} Downloads</span>
+                  <span class="bg-green-600 px-4 py-2 rounded-lg">{{ work.pages }} Pages</span>
+                </div>
+              </div>
+              <button @click="downloadWork" 
+                      class="bg-white text-green-800 px-6 py-3 rounded-lg hover:bg-green-100 transition-colors flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Download Full Book
+              </button>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Content Section -->
+        <div class="max-w-7xl mx-auto px-4 py-12">
+          <div class="grid grid-cols-12 gap-8">
+            <!-- Chapters Sidebar -->
+            <div class="col-span-3">
+              <div class="sticky top-24">
+                <h2 class="text-xl font-bold mb-4">Chapters</h2>
+                <div class="space-y-2">
+                  <button v-for="chapter in work.chapters" 
+                          :key="chapter.id"
+                          @click="selectChapter(chapter)"
+                          :class="['chapter-card w-full text-left px-4 py-3 rounded-lg',
+                                  currentChapter && currentChapter.id === chapter.id 
+                                    ? 'bg-green-100 text-green-800' 
+                                    : 'bg-white hover:bg-gray-50']">
+                    {{ chapter.title }}
+                  </button>
+                </div>
+              </div>
+            </div>
+    
+            <!-- Main Content -->
+            <div class="col-span-9" v-if="currentChapter">
+              <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-6">{{ currentChapter.title }}</h2>
+                <div class="space-y-6">
+                  <p class="text-lg text-gray-600">{{ currentChapter.content }}</p>
+                  <div class="arabic-text text-2xl text-right">
+                    {{ currentChapter.arabicText }}
+                  </div>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="flex justify-between items-center mt-12 pt-6 border-t">
+                  <button 
+                    v-if="previousChapter"
+                    @click="selectChapter(previousChapter)"
+                    class="flex items-center text-green-600 hover:text-green-800">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    Previous Chapter
+                  </button>
+                  <div v-else></div>
+                  
+                  <button 
+                    v-if="nextChapter"
+                    @click="selectChapter(nextChapter)"
+                    class="flex items-center text-green-600 hover:text-green-800">
+                    Next Chapter
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+    
+    <script>
+    const { createApp } = Vue
+    
+    createApp({
+      data() {
+        return {
+          work: {
+            id: 1,
+            title: 'Ihya ul-Sunna',
+            author: 'Sheik Othman Bn Fodio',
+            description: 'A comprehensive work on the revival of Prophetic traditions and their implementation in daily life.',
+            category: 'Fiqh',
+            downloads: 1234,
+            pages: 324,
+            chapters: [
+              {
+                id: 1,
+                title: 'Introduction to the Revival of Sunnah',
+                content: 'In this chapter, we explore the fundamental principles of reviving the Prophetic traditions and their significance in modern times. The author emphasizes the importance of understanding and implementing these traditions in their proper context.',
+                arabicText: 'بسم الله الرحمن الرحيم. الحمد لله رب العالمين والصلاة والسلام على سيدنا محمد وعلى آله وصحبه أجمعين'
+              },
+              {
+                id: 2,
+                title: 'The Importance of Following the Sunnah',
+                content: 'This chapter delves into why following the Sunnah is crucial for every Muslim. It discusses the relationship between the Quran and Sunnah, and how they complement each other in providing guidance.',
+                arabicText: 'قال رسول الله صلى الله عليه وسلم: من أحيا سنتي فقد أحبني، ومن أحبني كان معي في الجنة'
+              },
+              {
+                id: 3,
+                title: 'Implementing the Sunnah in Daily Life',
+                content: 'A practical guide to incorporating Prophetic traditions into our daily routines. This chapter provides specific examples and guidance for modern Muslims.',
+                arabicText: 'عن عائشة رضي الله عنها قالت: كان رسول الله صلى الله عليه وسلم يحب التيمن في تنعله وترجله وطهوره وفي شأنه كله'
+              }
+            ]
+          },
+          currentChapter: null
+        }
+      },
+      computed: {
+        previousChapter() {
+          if (!this.currentChapter) return null
+          const currentIndex = this.work.chapters.findIndex(chapter => chapter.id === this.currentChapter.id)
+          return currentIndex > 0 ? this.work.chapters[currentIndex - 1] : null
+        },
+        nextChapter() {
+          if (!this.currentChapter) return null
+          const currentIndex = this.work.chapters.findIndex(chapter => chapter.id === this.currentChapter.id)
+          return currentIndex < this.work.chapters.length - 1 ? this.work.chapters[currentIndex + 1] : null
+        }
+      },
+      methods: {
+        selectChapter(chapter) {
+          this.currentChapter = chapter
+        },
+        downloadWork() {
+          alert(`Downloading ${this.work.title}...`)
+        }
+      },
+      mounted() {
+        if (this.work && this.work.chapters && this.work.chapters.length > 0) {
+          this.currentChapter = this.work.chapters[0]
+        }
+      }
+    }).mount('#app')
+    </script>
+    
+    </body></html>
