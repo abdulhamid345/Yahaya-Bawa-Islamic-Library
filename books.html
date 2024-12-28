@@ -28,32 +28,83 @@
       .fade-in {
         animation: fadeIn 0.5s ease-out;
       }
+      .mobile-menu {
+        transition: transform 0.3s ease-in-out;
+      }
+      .mobile-menu.open {
+        transform: translateX(0);
+      }
+      .mobile-menu.closed {
+        transform: translateX(100%);
+      }
+      .moon-icon {
+        transition: transform 0.3s ease;
+        cursor: pointer;
+      }
+      .moon-icon:hover {
+        transform: rotate(45deg) scale(1.1);
+      }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
     </head>
     <body class="bg-gray-50">
     <div id="app">
-      <!-- Navigation -->
+     <!-- Navigation -->
       <nav class="bg-green-800 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
-          <div class="flex justify-between h-16">
-            <div class="flex items-center">
-              <a href="/" class="text-xl font-bold flex items-center">
-                <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="flex justify-between items-center h-16 relative">
+            <!-- Left side - Logo -->
+            <div class="flex-shrink-0 flex items-center">
+              <a href="/" class="text-xl font-bold flex items-center space-x-2">
+                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                Yahaya Bawa Islamic Library
+                <span class="hidden sm:inline">Yahaya Bawa Islamic Library</span>
+                <span class="sm:hidden">YBIL</span>
               </a>
             </div>
-            <div class="flex items-center space-x-6">
-              <a href="books.html" class="hover:text-green-200 transition-colors">Books</a>
-              <a href="scholars-page.html" class="hover:text-green-200 transition-colors">Scholars</a>
-              <a href="login.html" class="hover:text-green-200 transition-colors">Login</a>
-              <a href="register.html" class="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Register</a>
+    
+            <!-- Center - Moon Icon -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center">
+              <div class="bg-green-700 rounded-full p-2">
+                <svg class="w-6 h-6 moon-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+    
+            <!-- Right side - Navigation Links -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="books.html" class="px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Books</a>
+                <a href="scholars-page.html" class="px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Scholars</a>
+                <a href="login.html" class="px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Login</a>
+                <a href="register.html" class="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Register</a>
+              </div>
+    
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center">
+              <button @click="toggleMobileMenu" class="inline-flex items-center justify-center p-2 rounded-md hover:bg-green-700 focus:outline-none transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path v-if="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                  <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
             </div>
           </div>
+    
+          <!-- Mobile menu panel -->
+          <transition enter-active-class="transition duration-200 ease-out" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition duration-100 ease-in" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+            <div v-show="isMobileMenuOpen" class="md:hidden">
+              <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="books.html" class="block px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Books</a>
+                <a href="scholars-page.html" class="block px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Scholars</a>
+                <a href="login.html" class="block px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Login</a>
+                <a href="register.html" class="block px-3 py-2 rounded-md bg-green-600 hover:bg-green-700 transition-colors">Register</a>
+              </div>
+            </div>
+          </transition>
         </div>
       </nav>
     
@@ -132,6 +183,7 @@
     createApp({
       data() {
         return {
+          isMobileMenuOpen: false,
           searchQuery: '',
           selectedCategories: [],
           categories: ['Fiqh', 'Aqeedah', 'History', 'Poetry', 'Philosophy'],
@@ -202,6 +254,9 @@
         }
       },
       methods: {
+        toggleMobileMenu() {
+          this.isMobileMenuOpen = !this.isMobileMenuOpen;
+        },
         toggleFilter(category) {
           const index = this.selectedCategories.indexOf(category);
           if (index === -1) {

@@ -22,30 +22,137 @@
       .fade-in {
         animation: fadeIn 0.5s ease-in;
       }
+      
+      /* Add responsive nav styles */
+      .mobile-menu {
+        display: none;
+      }
+      
+      @media (max-width: 768px) {
+        .desktop-menu {
+          display: none;
+        }
+        .mobile-menu {
+          display: block;
+        }
+        .mobile-menu-items {
+          display: none;
+        }
+        .mobile-menu-items.active {
+          display: block;
+        }
+      }
+      
+      /* Moon animation */
+      @keyframes moonGlow {
+        0% { filter: drop-shadow(0 0 2px #fff); }
+        50% { filter: drop-shadow(0 0 8px #fff); }
+        100% { filter: drop-shadow(0 0 2px #fff); }
+      }
+      
+      .moon-icon {
+        animation: moonGlow 3s infinite;
+      }
+      
+      .download-btn {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+    
+      .download-btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.1);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+    
+      .download-btn:hover::after {
+        transform: translateX(0);
+      }
+    
+      @keyframes downloadPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+    
+      .downloading {
+        animation: downloadPulse 1.5s infinite;
+      }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
     </head>
     <body class="bg-gray-50">
     <div id="app" v-cloak>
-      <!-- Navigation -->
+      <!-- Enhanced Navigation -->
       <nav class="bg-green-800 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
-          <div class="flex justify-between h-16">
-            <div class="flex items-center">
-              <a href="https://example.com" class="text-xl font-bold flex items-center">
-                <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Yahaya Bawa Islamic Library
-              </a>
+          <!-- Desktop Navigation -->
+          <div class="desktop-menu">
+            <div class="flex justify-between items-center h-16">
+              <div class="flex-1 flex items-center">
+                <a href="https://example.com" class="text-xl font-bold flex items-center">
+                  <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Islamic Heritage
+                </a>
+              </div>
+              
+              <!-- Moon Icon Center -->
+              <div class="flex-1 flex justify-center">
+                <div class="moon-icon">
+                  <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              
+              <div class="flex-1 flex items-center justify-end space-x-6">
+                <a href="https://example.com/books" class="hover:text-green-200 transition-colors">Books</a>
+                <a href="https://example.com/scholars" class="hover:text-green-200 transition-colors">Scholars</a>
+                <a href="https://example.com/login" class="hover:text-green-200 transition-colors">Login</a>
+                <a href="https://example.com/register" class="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Register</a>
+              </div>
             </div>
-            <div class="flex items-center space-x-6">
-                <a href="books.html" class="hover:text-green-200 transition-colors">Books</a>
-                <a href="scholars-page.html" class="hover:text-green-200 transition-colors">Scholars</a>
-                <a href="login.html" class="hover:text-green-200 transition-colors">Login</a>
-                <a href="register.html" class="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Register</a>
+          </div>
+    
+          <!-- Mobile Navigation -->
+          <div class="mobile-menu">
+            <div class="flex items-center justify-between h-16">
+              <a href="https://example.com" class="text-xl font-bold">Islamic Heritage</a>
+              
+              <!-- Moon Icon -->
+              <div class="moon-icon mx-4">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              
+              <!-- Mobile Menu Button -->
+              <button @click="toggleMobileMenu" class="p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"/>
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Mobile Menu Items -->
+            <div :class="['mobile-menu-items transition-all duration-300 ease-in-out', {'active': showMobileMenu}]">
+              <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="books.html" class="block px-3 py-2 rounded-md hover:bg-green-700">Books</a>
+                <a href="scholars-page.html" class="block px-3 py-2 rounded-md hover:bg-green-700">Scholars</a>
+                <a href="login.html" class="block px-3 py-2 rounded-md hover:bg-green-700">Login</a>
+                <a href="register.html" class="block px-3 py-2 rounded-md bg-green-600 hover:bg-green-700">Register</a>
+              </div>
             </div>
           </div>
         </div>
@@ -71,11 +178,15 @@
                 </div>
               </div>
               <button @click="downloadWork" 
-                      class="bg-white text-green-800 px-6 py-3 rounded-lg hover:bg-green-100 transition-colors flex items-center">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                      :class="['download-btn bg-white text-green-800 px-6 py-3 rounded-lg hover:bg-green-100 transition-colors flex items-center space-x-2', {'downloading': isDownloading}]" 
+                      :disabled="isDownloading">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path v-if="!isDownloading" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                  <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8l-8 8-8-8"/>
                 </svg>
-                Download Full Book
+                <span v-if="!isDownloading">Download Full Book</span>
+                <span v-else>Downloading...</span>
+                <span v-if="downloadProgress" class="ml-2">({{ downloadProgress }}%)</span>
               </button>
             </div>
           </div>
@@ -149,6 +260,7 @@
     createApp({
       data() {
         return {
+          showMobileMenu: false,
           work: {
             id: 1,
             title: 'Ihya ul-Sunna',
@@ -178,7 +290,9 @@
               }
             ]
           },
-          currentChapter: null
+          currentChapter: null,
+          isDownloading: false,
+          downloadProgress: 0
         }
       },
       computed: {
@@ -194,11 +308,47 @@
         }
       },
       methods: {
+        toggleMobileMenu() {
+          this.showMobileMenu = !this.showMobileMenu
+        },
         selectChapter(chapter) {
           this.currentChapter = chapter
         },
-        downloadWork() {
-          alert(`Downloading ${this.work.title}...`)
+        async downloadWork() {
+          if (this.isDownloading) return;
+          
+          this.isDownloading = true;
+          this.downloadProgress = 0;
+          
+          // Simulate download progress
+          const interval = setInterval(() => {
+            if (this.downloadProgress < 100) {
+              this.downloadProgress += Math.floor(Math.random() * 20);
+              if (this.downloadProgress > 100) this.downloadProgress = 100;
+            }
+          }, 500);
+    
+          try {
+            // Simulate download delay
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            
+            // Create and trigger download
+            const link = document.createElement('a');
+            link.href = `https://example.com/api/downloads/works/${this.work.id}`;
+            link.download = `${this.work.title}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success message
+            alert(`Successfully downloaded ${this.work.title}`);
+          } catch (error) {
+            alert('Download failed. Please try again.');
+          } finally {
+            clearInterval(interval);
+            this.isDownloading = false;
+            this.downloadProgress = 0;
+          }
         }
       },
       mounted() {
