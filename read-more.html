@@ -90,95 +90,96 @@
     </head>
     <body class="bg-gray-50">
     <div id="app" v-cloak>
-      <!-- Enhanced Navigation -->
-      <nav class="bg-green-800 text-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-          <!-- Desktop Navigation -->
-          <div class="desktop-menu">
-            <div class="flex justify-between items-center h-16">
-              <div class="flex-1 flex items-center">
-                <a href="https://example.com" class="text-xl font-bold flex items-center">
-                  <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Islamic Heritage
-                </a>
-              </div>
-              
-              <!-- Moon Icon Center -->
-              <div class="flex-1 flex justify-center">
-                <div class="moon-icon">
-                  <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+        <nav class="bg-green-800 text-white shadow-lg sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8">
+              <div class="flex justify-between h-16">
+                <!-- Logo and brand -->
+                <div class="flex-shrink-0 flex items-center">
+                  <a href="https://example.com" class="flex items-center">
+                    <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="text-xl font-bold hidden sm:block">Yahaya Bawa Islamic Library</span>
+                    <span class="text-xl font-bold sm:hidden">YBIL</span>
+                  </a>
+                </div>
+          
+                <!-- Moon Icon - Centered on larger screens, hidden on mobile -->
+                <div class="hidden md:flex items-center justify-center flex-1">
+                  <div class="moon-icon">
+                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+          
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-4">
+                  <a href="books.html" class="px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Books</a>
+                  <a href="scholars-page.html" class="px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Scholars</a>
+                  <a href="login.html" class="px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Login</a>
+                  <a href="register.html" class="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Register</a>
+                </div>
+          
+                <!-- Mobile menu button -->
+                <div class="flex items-center md:hidden">
+                  <!-- Moon Icon for mobile -->
+                  <div class="moon-icon mr-4">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <button @click="toggleMobileMenu" 
+                          class="inline-flex items-center justify-center p-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                          aria-expanded="false"
+                          :aria-label="showMobileMenu ? 'Close menu' : 'Open menu'">
+                    <svg class="h-6 w-6" :class="{'hidden': showMobileMenu, 'block': !showMobileMenu }" 
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg class="h-6 w-6" :class="{'block': showMobileMenu, 'hidden': !showMobileMenu }"
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
                 </div>
               </div>
-              
-              <div class="flex-1 flex items-center justify-end space-x-6">
-                <a href="https://example.com/books" class="hover:text-green-200 transition-colors">Books</a>
-                <a href="https://example.com/scholars" class="hover:text-green-200 transition-colors">Scholars</a>
-                <a href="https://example.com/login" class="hover:text-green-200 transition-colors">Login</a>
-                <a href="https://example.com/register" class="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Register</a>
-              </div>
             </div>
-          </div>
-    
-          <!-- Mobile Navigation -->
-          <div class="mobile-menu">
-            <div class="flex items-center justify-between h-16">
-              <a href="https://example.com" class="text-xl font-bold">Islamic Heritage</a>
-              
-              <!-- Moon Icon -->
-              <div class="moon-icon mx-4">
-                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              
-              <!-- Mobile Menu Button -->
-              <button @click="toggleMobileMenu" class="p-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"/>
-                </svg>
-              </button>
-            </div>
-            
-            <!-- Mobile Menu Items -->
-            <div :class="['mobile-menu-items transition-all duration-300 ease-in-out', {'active': showMobileMenu}]">
+          
+            <!-- Mobile menu -->
+            <div class="md:hidden" 
+                 v-show="showMobileMenu">
               <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="books.html" class="block px-3 py-2 rounded-md hover:bg-green-700">Books</a>
-                <a href="scholars-page.html" class="block px-3 py-2 rounded-md hover:bg-green-700">Scholars</a>
-                <a href="login.html" class="block px-3 py-2 rounded-md hover:bg-green-700">Login</a>
-                <a href="register.html" class="block px-3 py-2 rounded-md bg-green-600 hover:bg-green-700">Register</a>
+                <a href="books.html" class="block px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Books</a>
+                <a href="scholars-page.html" class="block px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Scholars</a>
+                <a href="login.html" class="block px-3 py-2 rounded-md hover:bg-green-700 transition-colors">Login</a>
+                <a href="register.html" class="block px-3 py-2 rounded-md bg-green-600 hover:bg-green-700 transition-colors text-center">Register</a>
               </div>
             </div>
-          </div>
-        </div>
-      </nav>
-    
+          </nav>
       <template v-if="work">
         <!-- Work Header -->
         <div class="bg-green-700 text-white py-12">
-          <div class="max-w-7xl mx-auto px-4">
-            <div class="flex items-start justify-between">
+          <div class="max-w-7xl mx-auto px-4 sm:px-2">
+            <div class="flex flex-col sm:flex-row items-start justify-between">
               <div>
                 <div class="flex items-center space-x-4 mb-4">
                   <a href="https://example.com/scholar/1" class="text-green-200 hover:text-white transition-colors">{{ work.author }}</a>
                   <span class="text-green-200">›</span>
                   <span>{{ work.title }}</span>
                 </div>
-                <h1 class="text-4xl font-bold mb-4">{{ work.title }}</h1>
-                <p class="text-xl mb-6">{{ work.description }}</p>
-                <div class="flex space-x-4">
-                  <span class="bg-green-600 px-4 py-2 rounded-lg">{{ work.category }}</span>
-                  <span class="bg-green-600 px-4 py-2 rounded-lg">{{ work.downloads }} Downloads</span>
-                  <span class="bg-green-600 px-4 py-2 rounded-lg">{{ work.pages }} Pages</span>
+                <h1 class="text-4xl sm:text-2xl font-bold mb-4">{{ work.title }}</h1>
+                <p class="text-xl sm:text-base mb-6">{{ work.description }}</p>
+                <div class="flex flex-wrap space-x-4">
+                  <span class="bg-green-600 px-4 py-2 sm:px-2 sm:py-1 rounded-lg">{{ work.category }}</span>
+                  <span class="bg-green-600 px-4 py-2 sm:px-2 sm:py-1 rounded-lg">{{ work.downloads }} Downloads</span>
+                  <span class="bg-green-600 px-4 py-2 sm:px-2 sm:py-1 rounded-lg">{{ work.pages }} Pages</span>
                 </div>
               </div>
               <button @click="downloadWork" 
-                      :class="['download-btn bg-white text-green-800 px-6 py-3 rounded-lg hover:bg-green-100 transition-colors flex items-center space-x-2', {'downloading': isDownloading}]" 
+                      :class="['download-btn bg-white text-green-800 px-6 py-3 sm:px-3 sm:py-2 rounded-lg hover:bg-green-100 transition-colors flex items-center space-x-2', {'downloading': isDownloading}]" 
                       :disabled="isDownloading">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path v-if="!isDownloading" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -193,17 +194,17 @@
         </div>
     
         <!-- Content Section -->
-        <div class="max-w-7xl mx-auto px-4 py-12">
-          <div class="grid grid-cols-12 gap-8">
+        <div class="max-w-7xl mx-auto px-4 py-12 sm:px-2">
+          <div class="grid grid-cols-12 gap-8 sm:grid-cols-1">
             <!-- Chapters Sidebar -->
-            <div class="col-span-3">
+            <div class="col-span-3 sm:col-span-12">
               <div class="sticky top-24">
                 <h2 class="text-xl font-bold mb-4">Chapters</h2>
                 <div class="space-y-2">
                   <button v-for="chapter in work.chapters" 
                           :key="chapter.id"
                           @click="selectChapter(chapter)"
-                          :class="['chapter-card w-full text-left px-4 py-3 rounded-lg',
+                          :class="['chapter-card w-full text-left px-4 py-3 sm:px-2 sm:py-1 rounded-lg',
                                   currentChapter && currentChapter.id === chapter.id 
                                     ? 'bg-green-100 text-green-800' 
                                     : 'bg-white hover:bg-gray-50']">
@@ -214,18 +215,18 @@
             </div>
     
             <!-- Main Content -->
-            <div class="col-span-9" v-if="currentChapter">
-              <div class="bg-white rounded-lg shadow-lg p-8">
-                <h2 class="text-2xl font-bold mb-6">{{ currentChapter.title }}</h2>
+            <div class="col-span-9 sm:col-span-12" v-if="currentChapter">
+              <div class="bg-white rounded-lg shadow-lg p-8 sm:p-4">
+                <h2 class="text-2xl sm:text-xl font-bold mb-6">{{ currentChapter.title }}</h2>
                 <div class="space-y-6">
-                  <p class="text-lg text-gray-600">{{ currentChapter.content }}</p>
-                  <div class="arabic-text text-2xl text-right">
+                  <p class="text-lg sm:text-base text-gray-600">{{ currentChapter.content }}</p>
+                  <div class="arabic-text text-2xl sm:text-lg text-right">
                     {{ currentChapter.arabicText }}
                   </div>
                 </div>
                 
                 <!-- Navigation -->
-                <div class="flex justify-between items-center mt-12 pt-6 border-t">
+                <div class="flex flex-wrap justify-between items-center mt-12 pt-6 border-t">
                   <button 
                     v-if="previousChapter"
                     @click="selectChapter(previousChapter)"
@@ -302,45 +303,41 @@
           return currentIndex > 0 ? this.work.chapters[currentIndex - 1] : null
         },
         nextChapter() {
-          if (!this.currentChapter) return null
-          const currentIndex = this.work.chapters.findIndex(chapter => chapter.id === this.currentChapter.id)
-          return currentIndex < this.work.chapters.length - 1 ? this.work.chapters[currentIndex + 1] : null
+          if (!this.currentChapter) return null;
+          const currentIndex = this.work.chapters.findIndex(chapter => chapter.id === this.currentChapter.id);
+          return currentIndex < this.work.chapters.length - 1 ? this.work.chapters[currentIndex + 1] : null;
         }
       },
       methods: {
         toggleMobileMenu() {
-          this.showMobileMenu = !this.showMobileMenu
+          this.showMobileMenu = !this.showMobileMenu;
         },
         selectChapter(chapter) {
-          this.currentChapter = chapter
+          this.currentChapter = chapter;
         },
         async downloadWork() {
           if (this.isDownloading) return;
-          
+
           this.isDownloading = true;
           this.downloadProgress = 0;
-          
-          // Simulate download progress
+
           const interval = setInterval(() => {
             if (this.downloadProgress < 100) {
               this.downloadProgress += Math.floor(Math.random() * 20);
               if (this.downloadProgress > 100) this.downloadProgress = 100;
             }
           }, 500);
-    
+
           try {
-            // Simulate download delay
             await new Promise(resolve => setTimeout(resolve, 3000));
-            
-            // Create and trigger download
+
             const link = document.createElement('a');
             link.href = `https://example.com/api/downloads/works/${this.work.id}`;
             link.download = `${this.work.title}.pdf`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            // Show success message
+
             alert(`Successfully downloaded ${this.work.title}`);
           } catch (error) {
             alert('Download failed. Please try again.');
@@ -353,10 +350,10 @@
       },
       mounted() {
         if (this.work && this.work.chapters && this.work.chapters.length > 0) {
-          this.currentChapter = this.work.chapters[0]
+          this.currentChapter = this.work.chapters[0];
         }
       }
-    }).mount('#app')
+    }).mount('#app');
     </script>
-    
-    </body></html>
+  </body>
+</html>
