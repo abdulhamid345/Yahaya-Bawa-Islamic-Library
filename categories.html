@@ -1,0 +1,233 @@
+<html><head><base href="/" /><title>Islamic Heritage Library - Categories</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<style>
+  .category-card {
+    transition: all 0.3s ease;
+  }
+  .category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+  .search-bar {
+    transition: all 0.3s ease;
+  }
+  .search-bar:focus {
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+  }
+  .hero-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .arabic-calligraphy {
+    font-family: 'Noto Naskh Arabic', serif;
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+<div id="app">
+  <!-- Navigation -->
+  <nav class="bg-green-800 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <a href="/" class="text-xl font-bold flex items-center">
+            <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Islamic Heritage Library
+          </a>
+        </div>
+        <div class="flex items-center space-x-6">
+          <a href="/books" class="hover:text-green-200 transition-colors">Books</a>
+          <a href="/categories" class="hover:text-green-200 transition-colors">Categories</a>
+          <a href="/scholars" class="hover:text-green-200 transition-colors">Scholars</a>
+          <a href="/login" class="hover:text-green-200 transition-colors">Login</a>
+          <a href="/register" class="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Register</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Categories Header -->
+  <div class="bg-green-700 text-white py-12 hero-pattern">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold mb-4 fade-in">Browse Categories</h1>
+        <p class="text-xl mb-8">Explore our extensive collection of Islamic texts by category</p>
+        
+        <!-- Search and Filter Controls -->
+        <div class="max-w-xl mx-auto flex flex-col sm:flex-row gap-4">
+          <input 
+            type="text" 
+            v-model="searchQuery" 
+            placeholder="Search categories..." 
+            class="search-bar flex-grow px-6 py-3 rounded-lg text-gray-800 bg-white/90 backdrop-blur-sm"
+          >
+          <select 
+            v-model="sortBy" 
+            class="px-6 py-3 rounded-lg text-gray-800 bg-white/90 backdrop-blur-sm border-0"
+          >
+            <option value="name">Sort by Name</option>
+            <option value="bookCount">Sort by Book Count</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories Grid -->
+  <div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div v-for="category in sortedCategories" 
+           :key="category.id" 
+           class="category-card bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div class="p-3 bg-green-100 rounded-lg">
+              <component :is="category.icon" class="w-8 h-8 text-green-600"></component>
+            </div>
+            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+              {{ category.bookCount }} Books
+            </span>
+          </div>
+          
+          <h3 class="text-xl font-bold mb-2 text-gray-900">{{ category.name }}</h3>
+          <p class="text-gray-600 mb-4">{{ category.description }}</p>
+          
+          <!-- Featured Book Preview if available -->
+          <div v-if="category.featuredBook" class="mb-4 p-3 bg-green-50 rounded-lg">
+            <p class="text-sm font-medium text-green-800">Featured Book:</p>
+            <p class="text-sm text-green-700">{{ category.featuredBook.title }}</p>
+          </div>
+          
+          <a :href="'/categories/' + category.id" 
+             class="inline-flex items-center justify-center w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
+            View Books
+            <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const { createApp } = Vue
+
+createApp({
+  data() {
+    return {
+      searchQuery: '',
+      sortBy: 'name',
+      categories: [
+        {
+          id: 1,
+          name: 'Fiqh',
+          description: 'Islamic jurisprudence covering various aspects of Shariah law and its application',
+          bookCount: 145,
+          icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>`
+          },
+          featuredBook: {
+            title: 'Foundations of Islamic Jurisprudence'
+          }
+        },
+        {
+          id: 2,
+          name: 'Tafsir',
+          description: 'Quranic exegesis and interpretation by renowned scholars',
+          bookCount: 98,
+          icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>`
+          },
+          featuredBook: {
+            title: 'Commentary on Surah Al-Fatiha'
+          }
+        },
+        {
+          id: 3,
+          name: 'Hadith',
+          description: 'Collections and studies of Prophetic traditions and sayings',
+          bookCount: 120,
+          icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>`
+          },
+          featuredBook: {
+            title: 'Collection of Authentic Hadiths'
+          }
+        },
+        {
+          id: 4,
+          name: 'Aqeedah',
+          description: 'Islamic theology and fundamentals of faith',
+          bookCount: 85,
+          icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>`
+          }
+        },
+        {
+          id: 5,
+          name: 'History',
+          description: 'Islamic history and chronicles of significant events',
+          bookCount: 76,
+          icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`
+          }
+        },
+        {
+          id: 6,
+          name: 'Sufism',
+          description: 'Islamic mysticism and spiritual development',
+          bookCount: 92,
+          icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>`
+          }
+        },
+        {
+          id: 7,
+          name: 'Politics',
+          description: 'Islamic political theory, governance, and leadership principles',
+          bookCount: 68,
+          icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>`
+          },
+          featuredBook: {
+            title: 'Principles of Islamic Governance'
+          }
+        }
+      ]
+    }
+  },
+  computed: {
+    sortedCategories() {
+      let filtered = this.categories.filter(category => 
+        category.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+      
+      return filtered.sort((a, b) => {
+        if (this.sortBy === 'name') {
+          return a.name.localeCompare(b.name);
+        } else {
+          return b.bookCount - a.bookCount;
+        }
+      });
+    }
+  }
+}).mount('#app')
+</script>
+
+</body></html>
