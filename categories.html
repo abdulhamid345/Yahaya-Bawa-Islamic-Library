@@ -182,6 +182,7 @@ const { createApp } = Vue
 createApp({
   data() {
     return {
+      isMobileMenuOpen: false,
       searchQuery: '',
       sortBy: 'name',
       categories: [
@@ -276,9 +277,13 @@ createApp({
           return b.bookCount - a.bookCount;
         }
       });
-    }
-  }
+    },
+  },
+  methods: {
+    toggleMobileMenu() {
+      this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    },
+  },
 }).mount('#app')
 </script>
-
 </body></html>
